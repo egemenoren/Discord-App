@@ -15,7 +15,7 @@ namespace Infrastructure
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=159.146.54.50;Database=DiscordNET; uid=sa; pwd=123ege123; Trusted_Connection=False;");
+            optionsBuilder.UseSqlServer("CONNSTR");
         }
         public DbSet<Examination> Examinations { get; set; }
         public DbSet<Insurance> Insurance { get; set; }
