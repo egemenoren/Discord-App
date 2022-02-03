@@ -5,12 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure
+namespace Infrastructure.EmsEntities
 {
     public class EmsBaseEntity
     {
         [Key]
         public int Id { get; set; }
         public bool Fix { get; set; }
+        public int CreatedBy { get; set; }
+        public DateTime CreateTime { get; set; } = DateTime.Now;
+        public Status Status { get; set; } = Status.Active;
     }
 }

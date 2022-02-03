@@ -40,20 +40,20 @@ namespace Discord_App.Services
 
         }
         private System.Timers.Timer timer;
-        private async void CheckDatabase(object sender,ElapsedEventArgs e)
+        private async void CheckDatabase(object sender, ElapsedEventArgs e)
         {
             var channel = _discord.GetChannel(902728499268313129) as ITextChannel;
             //check database any fixes..
             var serviceExamination = new ExaminationService();
             var entityExamination = serviceExamination.CheckData();
-            if(entityExamination != null)
+            if (entityExamination != null)
             {
                 var embedBuilder = new EmbedBuilder()
                     .WithThumbnailUrl("https://w7.pngwing.com/pngs/462/783/png-transparent-star-of-life-emergency-medical-services-emergency-medical-technician-paramedic-star-of-life-angle-text-logo.png")
                     .AddField("Hasta Adı", entityExamination.NameSurname)
-                    .AddField("Doktor", entityExamination.DoctorName)
-                    .AddField("Yapılan Müdahale", entityExamination.Process)
-                    .AddField("Fatura", entityExamination.Bill)
+                    //.AddField("Doktor", entityExamination.DoctorName)
+                    //.AddField("Yapılan Müdahale", entityExamination.Process)
+                    //.AddField("Fatura", entityExamination.Bill)
                     .AddField("Sigortası", entityExamination.HaveInsurance ? "Var" : "Yok")
                     .WithCurrentTimestamp();
                 var embed = embedBuilder.Build();
@@ -61,7 +61,7 @@ namespace Discord_App.Services
                 await serviceExamination.UpdateData(entityExamination);
             }
 
-            
+
         }
         private async Task OnUserLeft(SocketGuildUser user)
         {
@@ -69,13 +69,14 @@ namespace Discord_App.Services
             await channel.SendMessageAsync($"Ayb dii mi lan"); //Welcomes the new user
         }
     
-        private async Task OnReady()
+        private Task OnReady()
         {
             Console.WriteLine($"Connected as {_discord.CurrentUser.Username}#{_discord.CurrentUser.Discriminator}");
 
             timer = new System.Timers.Timer(1000*5); // Timer for 10 seconds
             timer.Elapsed += new System.Timers.ElapsedEventHandler(CheckDatabase);
             timer.Start();
+            return Task.CompletedTask;
             
             
         }
@@ -100,7 +101,7 @@ namespace Discord_App.Services
                 {
                     var reason = result.Error;
 
-                    await context.Channel.SendMessageAsync("The following error occured: \n {reason}");
+                    await context.Channel.SendMessageAsync("Böyle bi komut yok topraaam");
                     Console.WriteLine(reason);
                 }
             }

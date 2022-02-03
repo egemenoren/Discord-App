@@ -8,14 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.EmsEntities
 {
-    public partial class RegisterInsurance:EmsBaseEntity
+    public partial class Shift : EmsBaseEntity
     {
         [Key]
-        public string NameSurname { get; set; }
-        public int DoctorId { get; set; }
-        public short InsuranceId { get; set; }
-        public short CreditsLeft { get; set; }
+        public int UserId { get; set; }
         [Column(TypeName = "datetime")]
-        public DateTime ExpireDate { get; set; }
+        public DateTime? StartDate { get; set; }
+        [Column(TypeName = "datetime")]
+        public DateTime? EndDate { get; set; }
     }
 }

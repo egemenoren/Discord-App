@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Core.Services
 {
-    public abstract class BaseEmsServices<T> where T:EmsBaseEntity
+    public abstract class BaseEmsServices<T> where T: class
     {
         GenericRepository<T> _repo;
         public BaseEmsServices()
@@ -18,7 +18,7 @@ namespace Core.Services
         public virtual T CheckData()
         {
             var entity = _repo.Select(x => x.Fix == false).FirstOrDefault();
-            if(entity != null)
+            if (entity != null)
             {
                 return entity;
             }

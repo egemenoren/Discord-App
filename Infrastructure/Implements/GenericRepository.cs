@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Implements
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T:EmsBaseEntity
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly DiscordContext _context;
         private protected DbSet<T> _dbSet;

@@ -42,6 +42,7 @@ namespace Discord_App
         }
         private void ConfigureServices(IServiceCollection services)
         {
+
             services.AddSingleton(new DiscordSocketClient(new DiscordSocketConfig
             {
                 LogLevel = Discord.LogSeverity.Verbose,
@@ -57,6 +58,9 @@ namespace Discord_App
                 .AddSingleton<StartupService>()
                 .AddSingleton(Configuration);
                 
+
+
+
         }
     }
 }

@@ -8,14 +8,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.EmsEntities
 {
-    public partial class RegisterInsurance:EmsBaseEntity
+    public partial class User : EmsBaseEntity
     {
         [Key]
         public string NameSurname { get; set; }
-        public int DoctorId { get; set; }
-        public short InsuranceId { get; set; }
-        public short CreditsLeft { get; set; }
+        public string Mail { get; set; }
+        public string Password { get; set; }
+        public int RankId { get; set; }
         [Column(TypeName = "datetime")]
-        public DateTime ExpireDate { get; set; }
+        public string HexId { get; set; }
+        public bool AccessManagementPanel { get; set; }
+        public long DiscordId { get; set; }
+        public int JobId { get; set; }
     }
 }
