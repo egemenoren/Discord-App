@@ -1,4 +1,5 @@
 ﻿using Infrastructure;
+using Infrastructure.EmsEntities;
 using Infrastructure.Implements;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Core.Services
 {
-    public abstract class BaseEmsServices<T> where T: class
+    public abstract class BaseEmsServices<T> where T: EmsBaseEntity
     {
         GenericRepository<T> _repo;
         public BaseEmsServices()
