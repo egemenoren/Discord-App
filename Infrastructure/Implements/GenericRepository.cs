@@ -15,6 +15,7 @@ namespace Infrastructure.Implements
         public GenericRepository()
         {
             _context = new DiscordContext();
+            
             _dbSet = _context.Set<T>();
         }
         public IEnumerable<T> Select(Expression<Func<T, bool>> Filter = null)

@@ -10,7 +10,6 @@ namespace Infrastructure.EmsEntities
 {
     public partial class Process:EmsBaseEntity
     {
-        [Key]
         public string ProcessName { get; set; }
         public double Price { get; set; }
     }

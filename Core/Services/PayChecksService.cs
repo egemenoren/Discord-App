@@ -1,5 +1,4 @@
-﻿
-using Infrastructure.EmsEntities;
+﻿using Infrastructure.EmsEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace Core.Services
 {
-    public class InsuranceRegService:BaseEmsServices<RegisterInsurance>
+    public class PayChecksService:BaseEmsServices<PayChecks>
     {
-
     }
-    
 }

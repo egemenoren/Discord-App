@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.EmsEntities
 {
-    public partial class Shift : EmsBaseEntity
+    public partial class Shifts : EmsBaseEntity
     {
-        [Key]
+      
         public int UserId { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? StartDate { get; set; }

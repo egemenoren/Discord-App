@@ -10,7 +10,7 @@ namespace Infrastructure.EmsEntities
 {
     public partial class MainMenu:EmsBaseEntity
     {
-        [Key]
+
         public string MenuName { get; set; }
         public string Icon { get; set; }
         public short DisplayOrder { get; set; }

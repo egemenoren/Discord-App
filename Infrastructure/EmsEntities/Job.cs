@@ -10,7 +10,7 @@ namespace Infrastructure.EmsEntities
 {
     public partial class Job:EmsBaseEntity
     {
-        [Key]
+
         public string JobName { get; set; }
     }
 }

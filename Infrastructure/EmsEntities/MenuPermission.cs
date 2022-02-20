@@ -10,7 +10,7 @@ namespace Infrastructure.EmsEntities
 {
     public partial class MenuPermission:EmsBaseEntity
     {
-        [Key]
+ 
         public int MainMenuId { get; set; }
         public int? RankId { get; set; }
         public int? UserId { get; set; }

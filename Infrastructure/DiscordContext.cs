@@ -1,5 +1,6 @@
 ﻿using System;
 using Infrastructure.EmsEntities;
+using Infrastructure.EmsEntities.Log;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -29,9 +30,11 @@ namespace Infrastructure
         public virtual DbSet<Process> Processes { get; set; }
         public virtual DbSet<Rank> Ranks { get; set; }
         public virtual DbSet<RegisterInsurance> RegisterInsurances { get; set; }
-        public virtual DbSet<Shift> Shifts { get; set; }
+        public virtual DbSet<Shifts> Shifts { get; set; }
         public virtual DbSet<SubMenu> SubMenus { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<PaidSalaries> PaidSalaries { get; set; }
+        public virtual DbSet<PayChecks> PayChecks { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
