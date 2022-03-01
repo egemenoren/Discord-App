@@ -36,13 +36,12 @@ namespace Discord_App
 
             var provider = services.BuildServiceProvider();
             provider.GetRequiredService<CommandHandler>();
-            
+
             await provider.GetRequiredService<StartupService>().StartAsync();
             await Task.Delay(-1);
         }
         private void ConfigureServices(IServiceCollection services)
         {
-
 
             services.AddSingleton(new DiscordSocketClient(new DiscordSocketConfig
             {
@@ -58,6 +57,9 @@ namespace Discord_App
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<StartupService>()
                 .AddSingleton(Configuration);
+                
+
+
 
         }
     }
