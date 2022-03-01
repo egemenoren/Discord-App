@@ -9,6 +9,12 @@ namespace Discord_App
         public static async Task Main(string[] args)
         {
            await Startup.RunAsync(args);
+            
+        }
+        static void UnhandledExceptionTrapper(object sender, UnhandledExceptionEventArgs e)
+        {
+            Console.WriteLine(e.ExceptionObject.ToString());
+            Console.WriteLine("Press Enter to Exit");
         }
     }
 }

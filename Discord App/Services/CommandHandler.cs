@@ -76,6 +76,7 @@ namespace Discord_App.Services
 
                 if (entityExamination.isJudical)
                 {
+                    entityExamination.OfficerName =  entityExamination.OfficerName ?? "--";
                     var channel = _discord.GetChannel(929412077116866576) as ITextChannel;
                     var embedBuilder = new EmbedBuilder()
                     .WithThumbnailUrl("https://w7.pngwing.com/pngs/462/783/png-transparent-star-of-life-emergency-medical-services-emergency-medical-technician-paramedic-star-of-life-angle-text-logo.png")
@@ -100,6 +101,7 @@ namespace Discord_App.Services
                     .AddField("Doktor", "<@" + user.DiscordId + ">")
                     .AddField("Müdahale Derecesi", entityExamination.ProcessId)
                     .AddField("Tanı", entityExamination.Diagnosis)
+                    .AddField("Fatura", entityExamination.Price)
                     .AddField("Sigortası", entityExamination.HaveInsurance ? "Var" : "Yok")
                     .WithCurrentTimestamp();
                     var embed = embedBuilder.Build();
@@ -114,32 +116,38 @@ namespace Discord_App.Services
         private async void CheckShiftDatabase(object sender, ElapsedEventArgs e)
         {
             var shiftService = new ShiftService();
-            var shiftDatas = shiftService.CheckData();
+            var shiftDatas = shiftService.CheckAllData();
             if (shiftDatas != null)
             {
-                var endShift = "";
-                if (shiftDatas.EndDate == null)
+                foreach (var item in shiftDatas)
                 {
-                    endShift = "--";
-                }
-                else
-                {
-                    endShift = shiftDatas.EndDate.ToString();
-                }
-                var userService = new UserService();
-                var user = userService.GetByParameter(x => x.Id == shiftDatas.UserId);
 
-                var channel = _discord.GetChannel(929412077116866574) as ITextChannel;
-                var embedBuilder = new EmbedBuilder()
-                .WithThumbnailUrl("https://w7.pngwing.com/pngs/462/783/png-transparent-star-of-life-emergency-medical-services-emergency-medical-technician-paramedic-star-of-life-angle-text-logo.png")
-                .AddField("Doktor Adı", user.NameSurname)
-                .AddField("Doktor", "<@" + user.DiscordId + ">")
-                .AddField("Giriş Saati", shiftDatas.StartDate)
-                .AddField("Çıkış Saati", endShift)
-                .WithCurrentTimestamp();
-                var embed = embedBuilder.Build();
-                await channel.SendMessageAsync(null, false, embed);
-                await shiftService.UpdateData(shiftDatas);
+
+                    var endShift = "";
+
+                    if (item.EndDate == null)
+                    {
+                        endShift = "--";
+                    }
+                    else
+                    {
+                        endShift = item.EndDate.ToString();
+                    }
+                    var userService = new UserService();
+                    var user = userService.GetByParameter(x => x.Id == item.UserId);
+
+                    var channel = _discord.GetChannel(929412077116866574) as ITextChannel;
+                    var embedBuilder = new EmbedBuilder()
+                    .WithThumbnailUrl("https://w7.pngwing.com/pngs/462/783/png-transparent-star-of-life-emergency-medical-services-emergency-medical-technician-paramedic-star-of-life-angle-text-logo.png")
+                    .AddField("Doktor Adı", user.NameSurname)
+                    .AddField("Doktor", "<@" + user.DiscordId + ">")
+                    .AddField("Giriş Saati", item.StartDate)
+                    .AddField("Çıkış Saati", endShift)
+                    .WithCurrentTimestamp();
+                    var embed = embedBuilder.Build();
+                    await channel.SendMessageAsync(null, false, embed);
+                    await shiftService.UpdateData(item);
+                }
             }
 
 
@@ -153,12 +161,12 @@ namespace Discord_App.Services
             if (paidSalariesToManagement != null)
             {
                 var userService = new UserService();
-                var doctorList = userService.GetAllByParameter(x=>x.JobId == 2);
+                var doctorList = userService.GetAllByParameter(x => x.JobId == 2);
                 var examinationService = new ExaminationService();
                 var insuranceRegService = new InsuranceRegService();
                 var payChecksManager = new PayChecksService();
 
-                var channelDiscord = _discord.GetChannel(942107366420271115) as ITextChannel;
+                var channelDiscord = _discord.GetChannel(947405728082169886) as ITextChannel;
                 foreach (var doctor in doctorList)
                 {
                     var doctorsPaycheck = payChecksManager.GetByParameter(x => x.UserId == doctor.Id && x.IsPaid == false);
@@ -178,9 +186,11 @@ namespace Discord_App.Services
                    .WithCurrentTimestamp();
                     var embed = embedBuilder.Build();
 
-                    if(paidSalaries != null)
+                    if (paidSalaries != null)
                     {
                         IUser userDiscord = _discord.GetUser((ulong)doctor.DiscordId); // Get the User (wait atleast 10sec after starting)
+                        if (userDiscord == null)
+                            continue;
                         var channel = await userDiscord.GetOrCreateDMChannelAsync(); // Get/Create a DM Channel
                         var embedBuilderDM = new EmbedBuilder()
                         .WithThumbnailUrl("https://w7.pngwing.com/pngs/462/783/png-transparent-star-of-life-emergency-medical-services-emergency-medical-technician-paramedic-star-of-life-angle-text-logo.png")
@@ -194,28 +204,8 @@ namespace Discord_App.Services
                         await channelDiscord.SendMessageAsync(null, false, embed);
                         await paidSalariesService.UpdateData(paidSalaries);
                     }
-                    
+
                 }
-
-
-            }
-
-            if (paidSalaries != null)
-            {
-                var userService = new UserService();
-                var user = userService.GetByParameter(x => x.Id == paidSalaries.UserId);
-                IUser userDiscord = _discord.GetUser((ulong)user.DiscordId); // Get the User (wait atleast 10sec after starting)
-                var channel = await userDiscord.GetOrCreateDMChannelAsync(); // Get/Create a DM Channel
-                var embedBuilder = new EmbedBuilder()
-                .WithThumbnailUrl("https://w7.pngwing.com/pngs/462/783/png-transparent-star-of-life-emergency-medical-services-emergency-medical-technician-paramedic-star-of-life-angle-text-logo.png")
-                .AddField("Doktor Adı", user.NameSurname)
-                .AddField("Kart Türü", "Ek Prim Kartı")
-                .AddField("Mesaj", "Verdiğiniz Emekler için teşekkür ederiz <3")
-                .AddField("Ek Ödeme", paidSalaries.Salary)
-                .WithCurrentTimestamp();
-                var embed = embedBuilder.Build();
-                await userDiscord.SendMessageAsync(null, false, embed);
-                await paidSalariesService.UpdateData(paidSalaries);
             }
         }
         private async Task OnUserLeft(SocketGuildUser user)
@@ -228,15 +218,14 @@ namespace Discord_App.Services
         {
             Console.WriteLine($"Connected as {_discord.CurrentUser.Username}#{_discord.CurrentUser.Discriminator}");
 
-            timer = new Timer(1000 * 5);
-            //longTimer = new Timer(1000 * 5);
-
-            //longTimer.Elapsed += new ElapsedEventHandler(CheckPaidDatabase);
+            timer = new Timer(1000 * 45);
+            longTimer = new Timer(1000 * 45);
+            longTimer.Elapsed += new ElapsedEventHandler(CheckPaidDatabase);
             timer.Elapsed += new ElapsedEventHandler(CheckExaminationDatabase);
             timer.Elapsed += new ElapsedEventHandler(CheckInsuranceDatabase);
             timer.Elapsed += new ElapsedEventHandler(CheckShiftDatabase);
             timer.Start();
-            //longTimer.Start();
+            longTimer.Start();
             return Task.CompletedTask;
 
 

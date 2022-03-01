@@ -1,5 +1,5 @@
 ﻿prefix: '!'
 tokens:
-  discord: 'token'
+  discord: 'OTAyMzY0MjcwOTA4NTY3NTUy.YXdWNw.pEXvzA9Y6w32nCgi82jQHbRcYPs'
 ConnectionStrings:
-  DefaultDc: 'connection string'
+  DefaultDc: 'Server=159.146.54.50\\SQLEXPRESS;Database=DiscordNET; uid=sa; pwd=123ege123; Trusted_Connection=True;'

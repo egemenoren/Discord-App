@@ -14,17 +14,31 @@ namespace Infrastructure.Implements
         private protected DbSet<T> _dbSet;
         public GenericRepository()
         {
-            _context = new DiscordContext();
+            try
+            {
+                _context = new DiscordContext();
+                _dbSet = _context.Set<T>();
+            }
+            catch
+            {
+
+            }
             
-            _dbSet = _context.Set<T>();
         }
         public IEnumerable<T> Select(Expression<Func<T, bool>> Filter = null)
         {
-            if (Filter != null)
+            try
             {
-                return _dbSet.Where(Filter);
+                if (Filter != null)
+                {
+                    return _dbSet.Where(Filter);
+                }
+                return _dbSet;
             }
-            return _dbSet;
+            catch
+            {
+                return _dbSet;
+            } 
         }
 
         public async Task Update(T entity)
@@ -35,7 +49,15 @@ namespace Infrastructure.Implements
         }
         public async Task SaveChanges()
         {
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+
+            }
+            
         }
     }
 }
